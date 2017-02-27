@@ -1,0 +1,86 @@
+#! /bin/bash
+function make_simulation_input {
+	echo "SimulationType                  MC" > simulation.input
+	echo "NumberOfCycles                  0"  >> simulation.input
+	echo "NumberOfInitializationCycles    0"  >> simulation.input
+	echo "PrintEvery                      0"  >> simulation.input
+	echo "RemoveAtomNumberCodeFromLabel   yes"  >> simulation.input
+	echo "CutOff                          1.0"  >> simulation.input
+	echo "Forcefield                      local"  >> simulation.input
+	echo "Framework                       0"  >> simulation.input
+	echo "FrameworkName                   Local"  >> simulation.input
+	echo "UnitCells                       1 1 1"  >> simulation.input
+	echo "FrameworkDefinitions            local"  >> simulation.input
+	echo "FlexibleFramework               yes"  >> simulation.input
+	echo "ExternalTemperature             1.0"  >> simulation.input
+	echo "ExternalPressure                0.0"  >> simulation.input
+}
+function make_input {
+        echo $number_Al $number_cation_divalent $number_cation_monovalent > input
+        echo $Sustituir_Si_Al $core_shell 				  >> input
+        echo $NUM $NUM_Si            >> input # 
+        echo "0"                     >> input # Imponer Seed (si es distinto de cero)
+        echo $A $B $C $thA $thB $thC >> input # parametros de celda
+}
+EXP=1
+#{{ 144 es específico de la RHO.
+#   576 es la LTA 2 2 2
+#    72 ITQ-29 
+NUM=144 # }}
+Sustituir_Si_Al=".true."
+core_shell=".true."
+number_Al=8
+number_cation_monovalent=4
+number_cation_divalent=2
+forcefield=catlow # ramsahye catlow
+echo "Use $forcefield"
+cd src
+ make
+ mv si_al ../.
+cd ..
+make_simulation_input
+cp null/*.def .
+simulate > /dev/null # RASPA en .bashrc (simulate)
+rm *.def
+cp Movies/System_0/Framework_0_final_1_1_1_P1.cif .
+rm -rf Output Movies Restart  > /dev/null
+CIF=Framework_0_final_1_1_1_P1.cif
+if [ -f log ] ; then rm log ; fi
+if [ ! -f $CIF ] ; then exit 1 ; fi
+sed -i '/^$/d' $CIF
+tail -n$( echo $NUM ) $CIF > input.cif
+A=$( grep '_cell_length_a' $CIF | awk '{print $2}' )
+B=$( grep '_cell_length_b' $CIF | awk '{print $2}' )
+C=$( grep '_cell_length_c' $CIF | awk '{print $2}' )
+thA=$( grep '_cell_angle_alpha' $CIF | awk '{print $2}' )
+thB=$( grep '_cell_angle_beta'  $CIF | awk '{print $2}' )
+thC=$( grep '_cell_angle_gamma' $CIF | awk '{print $2}' )
+grep 'Si' input.cif > Si.cif
+grep 'Al' input.cif >> Si.cif
+NUM_Si=$(wc -l Si.cif | awk '{print $1}')
+for (( i=1 ; i<=$EXP ; i++ )) ; do
+	echo $i
+        make_input
+	./si_al < input > Output_igor_${i}.txt
+        # ./loop grafo 8 > loops_$i
+        mv gin OUT/.
+	cd OUT
+	   cat ${forcefield}.lib 	>> gin
+	   cat bottom.gulp 		>> gin
+           echo 'output cif final-'$i   >> gin
+	cd ..
+        mv OUT/gin CALC/$i.gin
+        mv *.txt CALC/.
+        cd CALC
+           echo "#! /bin/sh -f" > job_sender.sh
+           echo 'gulp < '$i'.gin > '$i'.gout' >> job_sender.sh
+           chmod +x job_sender.sh
+            #./job_sender.sh
+           echo "add structure in CALC"
+           sleep 1
+           echo '[GULP + ]'
+        cd ..
+        rm P input.cif label tmp aluminios.txt cations.txt output simulation.input
+done
+rm $CIF input.cif Si.cif
+exit 0

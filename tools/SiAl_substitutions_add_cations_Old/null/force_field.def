@@ -1,0 +1,7 @@
+# rules to overwrite
+0
+# number of defined interactions
+1
+# type      type2       interaction
+UNIT        UNIT        lennard-jones     1.00              1.00
+0

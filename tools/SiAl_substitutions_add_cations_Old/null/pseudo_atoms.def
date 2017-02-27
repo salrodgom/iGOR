@@ -1,0 +1,17 @@
+#number of pseudo atoms
+12
+#type      print   as  scatt oxidation	mass       charge  polarization B-factor radii   connectivity  anisotropic anisotropic-type   tinker-type
+UNIT       yes     H     H     -        1.0         1.0    0.0          1.0      1.0     0             0           absolute           0
+He         yes     He    He    -        4.002602    0.0    0.0          1.0      1.0     0             0           absolute           0
+Na         yes     Na    Na    -	22.98977   0.3834  0.0          1.0      1.00    0             0           absolute           0
+Cs         yes     Cs    Cs    -	132.90545  0.3834  0.0          1.0      1.00    0             0           absolute           0
+O          yes      O     O    -	15.9994   -0.393   0.0          1.0      0.5     2             0           absolute           0
+Oa         yes     Oa     O    -	15.9994   -0.41385 0.0          1.0      0.5     2             0           absolute           0
+Si_         yes     Si    Si    -	28.0855    0.786   0.0          1.0      1.18    4             0           absolute           0
+Al_         yes     Al    Al    -	26.981539  0.486   0.0          1.0      1.18    4             0           absolute           0
+C_co2      yes      C     C    -	12.0       0.6512  0.0          1.0      0.720   0             0           absolute           0
+O_co2      yes      O     O    -	15.9994   -0.3256  0.0          1.0      0.68    0             0           absolute           0
+CH4_sp3    yes     C     C     -        16.04246    0.0    0.0          1.0      1.00    0             0           absolute           0
+N_n2       yes     N     N     -        14.00674   -0.4048 0.0          1.0      0.7     0             0           absolute           0
+Na_	   yes     Na    Na    -        0.0	   0.0	   0.0		0.0	 0.0	 0		0	 absolute		0
+Cs_	   yes	   Cs	 Cs	-	0.0	0.0	0.0	0.0	0.0	0	0	absolute	0

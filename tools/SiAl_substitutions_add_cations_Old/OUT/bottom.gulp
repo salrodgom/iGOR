@@ -1,0 +1,4 @@
+cutp 16.0 1.0
+switch rfo gnorm 0.001
+dump every 1 out.res
+stepmx 0.01
