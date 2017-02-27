@@ -1,0 +1,5 @@
+#
+INPUT file,
+1. cell parameters
+2. # substitutions (Si-> Al), method (default: columbic cost), MC-steps
+3. Fractional coordinates
