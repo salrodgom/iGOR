@@ -1,0 +1,9 @@
+#
+INPUT file,
+1. cell parameters
+2. # substitutions (Si-> Al), method (default: columbic cost), MC-steps
+3. Fractional coordinates
+
+# CITING
+If you use the code, please consider citing this reference:
+Chemistry of Materials, 2015, 27 (16), 5657-5667, arxiv: 1605.06338, doi: 10.1021/acs.chemmater.5b02103
